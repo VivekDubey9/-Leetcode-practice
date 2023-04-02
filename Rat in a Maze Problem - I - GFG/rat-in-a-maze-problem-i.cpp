@@ -21,7 +21,7 @@ class Solution{
           if(row+1<n && maze[row+1][col]==1 && !vis[row+1][col]){
             vis[row][col]=1;
             solve(row+1,col,maze,n ,ans,vis,str+'D');
-            vis[row][col]=0;
+             vis[row][col]=0;
         }
           if(col-1>=0 && maze[row][col-1]==1 && !vis[row][col-1]){
             vis[row][col]=1;
