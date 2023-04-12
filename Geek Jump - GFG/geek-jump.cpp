@@ -11,7 +11,7 @@ class Solution {
         if(n<0)return 0;
         //cout<<dp[n]<<"-> ";
         //cout<<endl;
-        if(dp[n]!=-1)return dp[n];
+        if(dp[n]!=-1)return dp[n];  //memoization step
         int ss = INT_MAX;
         int fs = solve(height,n-1,dp) + abs(height[n]-height[n-1]);
         if(n-2>=0)
@@ -20,9 +20,19 @@ class Solution {
     }
     int minimumEnergy(vector<int>& height, int n) {
         // Code here
-        n-=1;
-        vector<int> dp(n+1,-1);
-        return solve(height,n,dp);
+        vector<int> dp(n,0);
+       // return solve(height,n,dp);
+       dp[0]=0;
+      
+       for(int i=1;i<n;i++){
+           
+           int fs = dp[i-1]+abs(height[i]-height[i-1]);
+           int ss = INT_MAX;
+           if(i-2>=0)
+            ss = dp[i-2]+abs(height[i]-height[i-2]);
+           dp[i] = min(fs,ss);
+       }
+       return dp[n-1];
         
     }
 };
