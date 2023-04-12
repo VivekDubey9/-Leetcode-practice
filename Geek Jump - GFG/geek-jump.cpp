@@ -23,16 +23,20 @@ class Solution {
         vector<int> dp(n,0);
        // return solve(height,n,dp);
        dp[0]=0;
-      
+       int prev2 =0;
+       int prev=0;
        for(int i=1;i<n;i++){
            
-           int fs = dp[i-1]+abs(height[i]-height[i-1]);
+           int fs = prev+abs(height[i]-height[i-1]);
            int ss = INT_MAX;
            if(i-2>=0)
-            ss = dp[i-2]+abs(height[i]-height[i-2]);
-           dp[i] = min(fs,ss);
+            ss =  prev2+abs(height[i]-height[i-2]);
+           int curi = min(fs,ss);
+           
+           prev2 = prev;
+           prev = curi;      //s
        }
-       return dp[n-1];
+       return prev;
         
     }
 };
