@@ -21,16 +21,36 @@ class Solution {
         int activity;
         for(int task=0;task<3;task++){
              if(task!=last){
-             activity = points[day][task]+f(day-1,task,points,dp);
-             maxi = max(maxi,activity);
+              activity = points[day][task]+f(day-1,task,points,dp);
+              maxi = max(maxi,activity);
              }
         }
         return dp[day][last] = maxi;
+        
+        
+        
     }
     int maximumPoints(vector<vector<int>>& points, int n) {
         // Code here
         vector<vector<int> > dp(n,vector<int>(4,-1));
-        return f(n-1,3,points,dp);
+        // return f(n-1,3,points,dp);
+        dp[0][0] = max(points[0][1],points[0][2]);
+        dp[0][1] = max(points[0][0],points[0][2]);
+        dp[0][2] = max(points[0][1],points[0][0]);
+        dp[0][3] = max(points[0][1],max(points[0][0],points[0][2]));
+        for(int day = 1;day<n;day++){
+            for(int last=0;last<4;last++){
+                dp[day][last]=0;
+                for(int task=0;task<3;task++){
+                    if(task!=last){
+                        dp[day][last] = max(dp[day][last],
+                        points[day][task]+dp[day-1][task]);
+                    }
+                }
+            }
+        }
+        return dp[n-1][3];
+        
     }
 };
 
