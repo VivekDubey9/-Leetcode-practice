@@ -8,36 +8,40 @@ class Solution{
 public:
     // Function to determine if graph can be coloured with at most M colours such
     // that no two adjacent vertices of graph are coloured with same colour.
-    bool isSafe(int node,bool graph[101][101],int color[],int col,int n){
-        for(int k=0;k<n;k++){
-            if(k!=node && graph[k][node]==1 && color[k]==col){
-                return false;
-            }
+    bool isSafe(int node,vector<int> adj[],int col,vector<int> &color){
+        for(auto it:adj[node]){
+            if(color[it]==col)return false;
         }
         return true;
-    }
-    bool solve(int node,bool graph[101][101],int color[],int m,int n){
-        //base case
-        if(node==n){
-            return true;
-        }
         
+    }
+    bool dfs(int node,vector<int> adj[],int m,int n,vector<int> &color){
+        
+        if(node == n)return true;
         for(int i=1;i<=m;i++){
-            if(isSafe(node,graph,color,i,n)){
-                color[node] = i;
-                if(solve(node+1,graph,color,m,n)){
-                    return true;
-                }
+            if(isSafe(node,adj,i,color)){
+                color[node]=i;
+                if(dfs(node+1,adj,m,n,color) )return true;
                 color[node]=0;
             }
         }
         return false;
+            
     }
     bool graphColoring(bool graph[101][101], int m, int n) {
-        // your code here
-        int color[m]={0};
-        if(solve(0,graph,color,m,n))return true;
+        vector<int> adj[n];
+        for(int i=0;i<n;i++){
+            for(int j=0;j<n;j++){
+                if(graph[i][j]==1){
+                    adj[i].push_back(j);
+                    adj[j].push_back(i);
+                }
+            }
+        }
+        vector<int> color(n,0);
+        if(dfs(0,adj,m,n,color))return true;
         else return false;
+        
     }
 };
 
